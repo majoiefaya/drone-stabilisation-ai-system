@@ -1,0 +1,23 @@
+# Configuration pour le déploiement Streamlit Cloud
+# Ce fichier est utilisé automatiquement par Streamlit Cloud
+
+[tool.streamlit]
+# Configuration spécifique au déploiement cloud
+secrets_file = ".streamlit/secrets.toml"
+
+[tool.streamlit.server]
+# Configuration serveur pour le cloud
+enableCORS = false
+enableXsrfProtection = false
+maxUploadSize = 200
+
+[tool.streamlit.theme]
+# Thème pour l'application cloud
+primaryColor = "#1f77b4"
+backgroundColor = "#ffffff"
+secondaryBackgroundColor = "#f0f2f6"
+textColor = "#262730"
+
+[tool.streamlit.browser]
+# Configuration navigateur
+gatherUsageStats = false

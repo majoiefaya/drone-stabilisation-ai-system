@@ -1,0 +1,33 @@
+# Core ML and Data Science
+
+
+pandas
+numpy
+matplotlib
+seaborn
+scikit-learn
+catboost
+
+# Advanced ML Models
+xgboost
+
+# Explainability
+shap
+
+# Model Persistence
+joblib
+
+# Interactive Plotting
+plotly
+
+# Streamlit Web App
+streamlit
+streamlit-option-menu
+
+# Additional Utilities
+Pillow
+openpyxl
+scipy
+
+# Optional: Progress bars and utilities
+tqdm

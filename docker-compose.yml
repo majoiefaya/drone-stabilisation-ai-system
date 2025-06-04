@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  dronestab-ai:
+    build: .
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./data:/app/data  # Monter le dossier des données
+      - ./models:/app/models  # Monter le dossier des modèles sauvegardés
+    environment:
+      - PYTHONPATH=/app
+      - STREAMLIT_SERVER_HEADLESS=true
+      - STREAMLIT_SERVER_ENABLE_CORS=false
+    restart: unless-stopped
+    container_name: dronestab-ai-app
+    
+  # Service optionnel pour base de données (si nécessaire dans le futur)
+  # postgres:
+  #   image: postgres:13
+  #   environment:
+  #     POSTGRES_DB: dronedb
+  #     POSTGRES_USER: droneuser
+  #     POSTGRES_PASSWORD: dronepass
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   ports:
+  #     - "5432:5432"
+
+# volumes:
+#   postgres_data:
