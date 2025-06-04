@@ -1,6 +1,5 @@
 # Pipeline IA de Stabilisation de Drone
 
-
 <p align="center">
   <!-- Langages et Librairies Python -->
   <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python"/>
@@ -21,6 +20,8 @@
   <!-- Licence -->
   <img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="License"/>
 </p>
+
+<h3 align="center">• • •</h3>
 
 ## Description du Projet
 
@@ -60,7 +61,7 @@ Ce projet développe un **pipeline automatisé et interactif** pour la stabilisa
 - **Validation Croisée** : Évaluation robuste des performances
 - **Sauvegarde Automatique** : Modèles et métadonnées prêts pour déploiement
 
-### 📈 Analyses Avancées
+### Analyses Avancées
 - **Métriques Complètes** : MSE, MAE, R² avec visualisations détaillées
 - **Tests de Robustesse** : Résistance au bruit et conditions extrêmes
 - **Analyse par Sous-groupes** : Performance selon différents scenarios de vol
@@ -371,7 +372,7 @@ Ce projet est sous licence **MIT** - voir [LICENSE](LICENSE) pour détails.
 - **Interface** : Widgets interactifs Jupyter
 - **Testing** : Suite tests robustesse complète
 
----
+<h3 align="center">• • •</h3>
 
 ## Résumé Exécutif
 
@@ -389,3 +390,13 @@ Ce projet est sous licence **MIT** - voir [LICENSE](LICENSE) pour détails.
 Ce pipeline constitue une **solution industrielle complète** pour la stabilisation autonome de drones par IA, alliant performance exceptionnelle, robustesse éprouvée et explicabilité transparente.
 
 **🎖️ Résultat : Système IA de classe mondiale pour stabilisation de drone**
+
+<h3 align="center">• • •</h3>
+
+## Soutien
+
+<p align="center">
+  <a href="https://buymeacoffee.com/majoiefaya" target="_blank" rel="noopener noreferrer">
+    <img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-yellow?style=flat-square&logo=buymeacoffee&logoColor=black" alt="Buy Me a Coffee"/>
+  </a>
+</p>
