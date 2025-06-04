@@ -921,9 +921,9 @@ def main():
         st.markdown("---")
         st.markdown("""
         <div style='text-align: center; color: #666;'>
-            🚁 DroneStab AI - Développé avec ❤️ et Streamlit | 
-            📧 Contact: votre.email@example.com | 
-            🔗 <a href='https://github.com/votre-repo'>GitHub</a>
+            🚁 DroneStab AI - Développé par Lidao Majoie FAYA | 
+            📧 Contact: majoiefaya@gmail.com | 
+            🔗 <a href='https://github.com/majoiefaya/drone-stabilisation-ai-system'>GitHub</a>
         </div>
         """, unsafe_allow_html=True)
         
