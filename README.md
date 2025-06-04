@@ -1,10 +1,33 @@
-# 🚁 Pipeline IA de Stabilisation de Drone
+# Pipeline IA de Stabilisation de Drone
 
-## 📋 Description du Projet
+<p align="center">
+  <!-- Langages et Librairies Python -->
+  <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python"/>
+  <img src="https://img.shields.io/badge/Pandas-150458?style=flat-square&logo=pandas&logoColor=white" alt="Pandas"/>
+  <img src="https://img.shields.io/badge/NumPy-013243?style=flat-square&logo=numpy&logoColor=white" alt="NumPy"/>
+  <img src="https://img.shields.io/badge/Matplotlib-11557C?style=flat-square&logo=plotly&logoColor=white" alt="Matplotlib"/>
+  <img src="https://img.shields.io/badge/Seaborn-4C78A8?style=flat-square&logo=seaborn&logoColor=white" alt="Seaborn"/>
+  <img src="https://img.shields.io/badge/Plotly-3F4F75?style=flat-square&logo=plotly&logoColor=white" alt="Plotly"/>
+  <img src="https://img.shields.io/badge/Scikit--Learn-F7931E?style=flat-square&logo=scikitlearn&logoColor=white" alt="Scikit-learn"/>
+  <img src="https://img.shields.io/badge/SHAP-FF7043?style=flat-square&logoColor=white" alt="SHAP"/>
+  <img src="https://img.shields.io/badge/Streamlit-FF4B4B?style=flat-square&logo=streamlit&logoColor=white" alt="Streamlit"/>
+  <img src="https://img.shields.io/badge/XGBoost-013243?style=flat-square&logo=xgboost&logoColor=white" alt="XGBoost"/>
+  <img src="https://img.shields.io/badge/Random_Forest-6E7B8B?style=flat-square" alt="Random Forest"/>
+  <img src="https://img.shields.io/badge/MLP_Regressor-6666FF?style=flat-square" alt="MLP Regressor"/>
+  <img src="https://img.shields.io/badge/Ridge_Regression-8E44AD?style=flat-square" alt="Ridge Regression"/>
+  <!-- Statut du projet -->
+  <img src="https://img.shields.io/badge/Status-Terminé-brightgreen?style=flat-square" alt="Statut"/>
+  <!-- Licence -->
+  <img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="License"/>
+</p>
+
+<h3 align="center">• • •</h3>
+
+## Description du Projet
 
 Ce projet développe un **pipeline automatisé et interactif** pour la stabilisation autonome de drones utilisant l'intelligence artificielle. Le système analyse en temps réel les données des capteurs embarqués (IMU, GPS, hélices) pour prédire et appliquer automatiquement les corrections de stabilisation nécessaires.
 
-### 🎯 Objectifs Principaux
+### Objectifs Principaux
 
 - **Stabilisation Autonome** : Prédiction automatique des corrections d'hélices à partir des données capteurs
 - **Pipeline ML Complet** : Entraînement, évaluation, et déploiement de modèles de régression
@@ -14,13 +37,13 @@ Ce projet développe un **pipeline automatisé et interactif** pour la stabilisa
 
 ## 🏗️ Architecture du Système
 
-### 📊 Données d'Entrée
+### Données d'Entrée
 - **Capteurs IMU** : Roll, Pitch, Yaw (orientation 3D)
 - **Accéléromètres** : ax, ay, az (accélérations 3 axes)
 - **GPS** : Latitude, Longitude, Altitude
 - **État Hélices** : h1, h2, h3, h4 (vitesses actuelles)
 
-### 🎯 Sorties Prédites
+### Sorties Prédites
 - **Corrections Hélices** : delta_h1, delta_h2, delta_h3, delta_h4
 - **Stabilisation Automatique** : Ajustements optimaux en temps réel
 
@@ -30,21 +53,21 @@ Ce projet développe un **pipeline automatisé et interactif** pour la stabilisa
 - **Ridge Regression** : Régression linéaire régularisée
 - **XGBoost** : Gradient boosting optimisé
 
-## 🚀 Fonctionnalités Clés
+## Fonctionnalités Clés
 
-### ⚡ Pipeline Automatisé
+### Pipeline Automatisé
 - **Prétraitement Intelligent** : Normalisation, détection d'outliers, validation de données
 - **Entraînement Multi-Modèles** : Comparaison automatique de 4 algorithmes ML
 - **Validation Croisée** : Évaluation robuste des performances
 - **Sauvegarde Automatique** : Modèles et métadonnées prêts pour déploiement
 
-### 📈 Analyses Avancées
+### Analyses Avancées
 - **Métriques Complètes** : MSE, MAE, R² avec visualisations détaillées
 - **Tests de Robustesse** : Résistance au bruit et conditions extrêmes
 - **Analyse par Sous-groupes** : Performance selon différents scenarios de vol
 - **Tests de Monotonie** : Validation des relations logiques capteurs/corrections
 
-### 🔍 Explicabilité IA
+### Explicabilité IA
 - **Analyse SHAP** : Importance des features et contribution aux prédictions
 - **Visualisations Interprétables** : Graphiques d'impact des variables
 - **Diagnostic Automatique** : Détection de biais et suggestions d'amélioration
@@ -55,30 +78,7 @@ Ce projet développe un **pipeline automatisé et interactif** pour la stabilisa
 - **Visualisations 3D** : Représentation temps réel du drone et corrections
 - **Mode Prédiction Live** : Interface de test en direct avec simulation
 
-### ☁️ Déploiement Streamlit Cloud
-- **Application en Ligne** : Accessible via navigateur web sans installation
-- **URL Publique** : Partage facile avec équipes et clients
-- **Auto-déploiement** : Mise à jour automatique depuis GitHub
-- **Performance Optimisée** : Cache intelligent et interface responsive
-
-#### 🚀 Accès Rapide à l'Application Web
-```bash
-# Version locale (développement)
-streamlit run main.py
-# Accessible sur: http://localhost:8501
-
-# Version cloud (production)
-# Accessible sur: https://votre-app.streamlit.app
-```
-
-#### 📋 Fonctionnalités Web Disponibles
-- **📊 Import de Données** : Chargement CSV personnalisé ou données démo
-- **🤖 Entraînement IA** : Interface guidée pour 4 modèles ML
-- **📈 Évaluation Visuelle** : Métriques interactives et comparaisons
-- **🚁 Simulation Temps Réel** : Contrôles de vol virtuels
-- **📱 Design Responsive** : Compatible mobile et desktop
-
-### 🎛️ Interface Utilisateur
+### Interface Utilisateur
 - **Widgets Interactifs** : Sélection dynamique des fichiers et paramètres
 - **Démonstrations Intégrées** : Exemples d'usage étape par étape
 - **Feedback Temps Réel** : Résultats et diagnostics instantanés
@@ -160,7 +160,7 @@ chmod +x test_local.sh
 
 ## 🎮 Guide d'Utilisation
 
-### 🚀 Démarrage Rapide (5 minutes)
+### Démarrage Rapide (5 minutes)
 
 1. **Ouvrir le notebook** `drone_stabilization_pipeline.ipynb`
 2. **Exécuter les cellules 1-10** pour l'entraînement de base
@@ -197,7 +197,7 @@ pipeline.auto_diagnostic(train_data, test_data)
 # - Suggestions d'amélioration
 ```
 
-## 📊 Résultats et Performances
+## Résultats et Performances
 
 ### 🏆 Performances Benchmark
 
@@ -222,16 +222,16 @@ pipeline.auto_diagnostic(train_data, test_data)
 ![Robustesse](docs/noise_robustness.png)
 *Performance maintenue jusqu'à 20% de bruit (excellent pour applications réelles)*
 
-### 🎯 Métriques de Succès
+### Métriques de Succès
 
 - **Précision** : MSE < 0.001 (objectif atteint)
 - **Explicabilité** : Variables importantes cohérentes avec physique du vol
 - **Robustesse** : Performance stable avec bruit jusqu'à 20%
 - **Temps réel** : Prédictions < 1ms par échantillon
 
-## 🔬 Analyses Techniques Avancées
+## Analyses Techniques Avancées
 
-### 🧪 Tests de Validation
+### Tests de Validation
 
 #### Validation Croisée (5-folds)
 - **Cohérence** : Écart-type des scores < 0.001
@@ -250,7 +250,7 @@ assert pitch_angle → stabilisation_adaptée
 - **Vol Intérieur** : Adaptation automatique aux contraintes
 - **Conditions Extrêmes** : Dégradation gracieuse et prédictible
 
-### 🔍 Explicabilité Détaillée
+### Explicabilité Détaillée
 
 #### Top 5 Features Influentes (SHAP)
 1. **h4** (hélice arrière-droite) : Impact maximal stabilisation
@@ -264,9 +264,9 @@ assert pitch_angle → stabilisation_adaptée
 - **Redondance Capteurs** : Pas de dépendance excessive à un seul capteur
 - **Stabilité Temporelle** : Importance features constante dans le temps
 
-## 🚀 Utilisation en Production
+## Utilisation en Production
 
-### ⚡ Intégration Temps Réel
+### Intégration Temps Réel
 
 ```python
 # Exemple d'intégration système embarqué
@@ -296,7 +296,7 @@ def stabilize_drone(sensor_data):
 4. **Post-traitement** : Limitation corrections (sécurité)
 5. **Application** : Envoi commandes moteurs
 
-### 📊 Monitoring Continu
+### Monitoring Continu
 
 ```python
 # Surveillance performance en continu
@@ -316,16 +316,16 @@ def monitor_model_drift(new_predictions, threshold=0.01):
 - **Mode Dégradé** : Fallback vers contrôle manuel en cas d'anomalie
 - **Logging Complet** : Traçabilité décisions IA pour debug/audit
 
-### 🧪 Tests de Fiabilité
+### Tests de Fiabilité
 
 - **Robustesse** : 10,000+ scenarios testés avec succès
 - **Cohérence** : Validation croisée sur 5 datasets indépendants
 - **Performance** : Latence < 1ms pour prédictions temps réel
 - **Mémoire** : Empreinte < 200MB pour système embarqué
 
-## 🔧 Troubleshooting
+## Troubleshooting
 
-### ❗ Problèmes Fréquents
+### Problèmes Fréquents
 
 | Problème | Cause | Solution |
 |----------|-------|----------|
@@ -334,7 +334,7 @@ def monitor_model_drift(new_predictions, threshold=0.01):
 | Widgets non affichés | Problème Jupyter | Redémarrer kernel |
 | Erreur dimensions | Mauvais preprocessing | Vérifier features/targets |
 
-### 🔍 Diagnostic Automatique
+### Diagnostic Automatique
 
 Le pipeline inclut un système de diagnostic intelligent :
 
@@ -349,9 +349,9 @@ pipeline.auto_diagnostic(train_data, test_data)
 # ✅ Suggestions amélioration
 ```
 
-## 🛣️ Roadmap et Évolutions
+## Roadmap et Évolutions
 
-### 🔮 Fonctionnalités Futures
+### Fonctionnalités Futures
 
 #### Phase 2 : IA Avancée
 - **Deep Learning** : Modèles LSTM pour séquences temporelles
@@ -406,15 +406,9 @@ Ce projet est sous licence **MIT** - voir [LICENSE](LICENSE) pour détails.
 - **Interface** : Widgets interactifs Jupyter
 - **Testing** : Suite tests robustesse complète
 
-### 🙏 Remerciements
-- **Scikit-learn** : Framework ML de référence
-- **SHAP** : Explicabilité IA state-of-the-art
-- **Jupyter** : Environnement développement interactif
-- **Communauté Open Source** : Contributions et feedback
+<h3 align="center">• • •</h3>
 
----
-
-## 🎯 Résumé Exécutif
+## Résumé Exécutif
 
 ### ✅ Objectifs Atteints
 
@@ -425,8 +419,18 @@ Ce projet est sous licence **MIT** - voir [LICENSE](LICENSE) pour détails.
 ✅ **Robustesse Validée** : Tests exhaustifs conditions extrêmes  
 ✅ **Documentation Professionnelle** : Guide utilisateur complet  
 
-### 🚀 Prêt pour Production
+### Prêt pour Production
 
 Ce pipeline constitue une **solution industrielle complète** pour la stabilisation autonome de drones par IA, alliant performance exceptionnelle, robustesse éprouvée et explicabilité transparente.
 
-**🎖️ Résultat : Système IA de classe mondiale pour stabilisation drone livré avec succès !**
+**🎖️ Résultat : Système IA de classe mondiale pour stabilisation de drone**
+
+<h3 align="center">• • •</h3>
+
+## Soutien
+
+<p align="center">
+  <a href="https://buymeacoffee.com/majoiefaya" target="_blank" rel="noopener noreferrer">
+    <img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-yellow?style=flat-square&logo=buymeacoffee&logoColor=black" alt="Buy Me a Coffee"/>
+  </a>
+</p>
