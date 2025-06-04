@@ -4,39 +4,39 @@
 # ===================================================================
 
 # Core Data Science Libraries
-pandas>=1.5.0
-numpy>=1.21.0,<2.0.0
-matplotlib>=3.5.0
-seaborn>=0.11.0
+pandas
+numpy
+matplotlib
+seaborn
 
 # Machine Learning Core
-scikit-learn>=1.3.0,<1.4.0
+scikit-learn
 
 # Advanced ML Models
-xgboost>=1.7.0,<2.0.0
+xgboost
 
 # Explainability (optionnel - peut être commenté si problème)
 # shap>=0.42.0
 
 # Model Persistence
-joblib>=1.3.0
+joblib
 
 # Interactive Plotting - Essential pour Streamlit
-plotly>=5.15.0,<6.0.0
+plotly
 
 # Streamlit Web Framework
-streamlit>=1.28.0,<2.0.0
+streamlit
 
 # Streamlit Extensions (optionnel)
 # streamlit-option-menu>=0.3.6
 
 # Utilities
-Pillow>=9.0.0
-scipy>=1.9.0,<2.0.0
+Pillow
+scipy
 
 # Performance & Progress
-tqdm>=4.64.0
+tqdm
 
 # Additional for Streamlit Cloud compatibility
-typing-extensions>=4.0.0
-protobuf>=3.20.0,<5.0.0
+typing-extensions
+protobuf
