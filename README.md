@@ -55,6 +55,29 @@ Ce projet développe un **pipeline automatisé et interactif** pour la stabilisa
 - **Visualisations 3D** : Représentation temps réel du drone et corrections
 - **Mode Prédiction Live** : Interface de test en direct avec simulation
 
+### ☁️ Déploiement Streamlit Cloud
+- **Application en Ligne** : Accessible via navigateur web sans installation
+- **URL Publique** : Partage facile avec équipes et clients
+- **Auto-déploiement** : Mise à jour automatique depuis GitHub
+- **Performance Optimisée** : Cache intelligent et interface responsive
+
+#### 🚀 Accès Rapide à l'Application Web
+```bash
+# Version locale (développement)
+streamlit run main.py
+# Accessible sur: http://localhost:8501
+
+# Version cloud (production)
+# Accessible sur: https://votre-app.streamlit.app
+```
+
+#### 📋 Fonctionnalités Web Disponibles
+- **📊 Import de Données** : Chargement CSV personnalisé ou données démo
+- **🤖 Entraînement IA** : Interface guidée pour 4 modèles ML
+- **📈 Évaluation Visuelle** : Métriques interactives et comparaisons
+- **🚁 Simulation Temps Réel** : Contrôles de vol virtuels
+- **📱 Design Responsive** : Compatible mobile et desktop
+
 ### 🎛️ Interface Utilisateur
 - **Widgets Interactifs** : Sélection dynamique des fichiers et paramètres
 - **Démonstrations Intégrées** : Exemples d'usage étape par étape
@@ -100,6 +123,40 @@ cd modele_de_stabilisation_dun_drone
 # Lancer Jupyter
 jupyter notebook drone_stabilization_pipeline.ipynb
 ```
+
+### 🌐 Déploiement Web (Streamlit)
+
+#### Option 1: Test Local
+```bash
+# Installation des dépendances web
+pip install -r requirements.txt
+
+# Lancement local
+streamlit run main.py
+# Ouvre http://localhost:8501
+```
+
+#### Option 2: Scripts de Test Automatique
+```bash
+# Windows
+test_local.bat
+
+# Linux/Mac
+chmod +x test_local.sh
+./test_local.sh
+```
+
+#### Option 3: Déploiement Streamlit Cloud
+1. **Push vers GitHub** de tous les fichiers
+2. **Aller sur** [share.streamlit.io](https://share.streamlit.io)
+3. **Connecter le repository** GitHub
+4. **Configurer** :
+   - Repository: `votre-username/drone-stabilization`
+   - Branch: `main`
+   - Main file: `main.py`
+5. **Déployer** - L'app sera disponible sur une URL publique
+
+> 📖 **Guide Détaillé** : Voir `STREAMLIT_CLOUD_DEPLOY.md` pour les instructions complètes
 
 ## 🎮 Guide d'Utilisation
 

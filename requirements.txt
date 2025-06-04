@@ -1,33 +1,42 @@
-# Core ML and Data Science
+# ===================================================================
+# Requirements.txt optimisé pour Streamlit Cloud
+# DroneStab AI - Pipeline de Stabilisation de Drone
+# ===================================================================
 
+# Core Data Science Libraries
+pandas>=1.5.0
+numpy>=1.21.0,<2.0.0
+matplotlib>=3.5.0
+seaborn>=0.11.0
 
-pandas
-numpy
-matplotlib
-seaborn
-scikit-learn
-catboost
+# Machine Learning Core
+scikit-learn>=1.3.0,<1.4.0
 
 # Advanced ML Models
-xgboost
+xgboost>=1.7.0,<2.0.0
 
-# Explainability
-shap
+# Explainability (optionnel - peut être commenté si problème)
+# shap>=0.42.0
 
 # Model Persistence
-joblib
+joblib>=1.3.0
 
-# Interactive Plotting
-plotly
+# Interactive Plotting - Essential pour Streamlit
+plotly>=5.15.0,<6.0.0
 
-# Streamlit Web App
-streamlit
-streamlit-option-menu
+# Streamlit Web Framework
+streamlit>=1.28.0,<2.0.0
 
-# Additional Utilities
-Pillow
-openpyxl
-scipy
+# Streamlit Extensions (optionnel)
+# streamlit-option-menu>=0.3.6
 
-# Optional: Progress bars and utilities
-tqdm
+# Utilities
+Pillow>=9.0.0
+scipy>=1.9.0,<2.0.0
+
+# Performance & Progress
+tqdm>=4.64.0
+
+# Additional for Streamlit Cloud compatibility
+typing-extensions>=4.0.0
+protobuf>=3.20.0,<5.0.0
