@@ -2,9 +2,7 @@
 🚁 DroneStab AI - Pipeline de Stabilisation de Drone
 Application Streamlit optimisée pour Streamlit Cloud
 
-Auteur: Votre Nom
-Version: 2.0
-Déploiement: Streamlit Cloud
+Version: 2.1 - Optimisée pour déploiement cloud
 """
 
 import streamlit as st
@@ -17,34 +15,46 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import io
 import warnings
-from sklearn.model_selection import train_test_split, cross_val_score
-from sklearn.neural_network import MLPRegressor
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.linear_model import Ridge
-from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
-import xgboost as xgb
+import sys
+import traceback
+
+# Imports ML avec gestion d'erreur
+try:
+    from sklearn.model_selection import train_test_split, cross_val_score
+    from sklearn.neural_network import MLPRegressor
+    from sklearn.ensemble import RandomForestRegressor
+    from sklearn.linear_model import Ridge
+    from sklearn.preprocessing import StandardScaler
+    from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+    import xgboost as xgb
+    ML_AVAILABLE = True
+except ImportError as e:
+    st.error(f"Erreur d'importation ML: {e}")
+    ML_AVAILABLE = False
 
 # Configuration optimisée pour Streamlit Cloud
 warnings.filterwarnings('ignore')
 plt.style.use('default')
 
-# Configuration de la page
-st.set_page_config(
-    page_title="🚁 DroneStab AI - Stabilisation Drone",
-    page_icon="🚁",
-    layout="wide",
-    initial_sidebar_state="expanded",
-    menu_items={
-        'Get Help': 'https://github.com/votre-repo/drone-stabilization',
-        'Report a bug': 'https://github.com/votre-repo/drone-stabilization/issues',
-        'About': """
-        # DroneStab AI
-        Pipeline intelligent de stabilisation de drone avec IA.
-        Développé avec Streamlit et déployé sur Streamlit Cloud.
-        """
-    }
-)
+# Configuration de la page avec gestion d'erreur
+try:
+    st.set_page_config(
+        page_title="🚁 DroneStab AI - Stabilisation Drone",
+        page_icon="🚁",
+        layout="wide",
+        initial_sidebar_state="expanded",
+        menu_items={
+            'Get Help': 'https://github.com/votre-repo/drone-stabilization',
+            'Report a bug': 'https://github.com/votre-repo/drone-stabilization/issues',
+            'About': """
+            # DroneStab AI
+            Pipeline intelligent de stabilisation de drone avec IA.
+            Développé avec Streamlit et déployé sur Streamlit Cloud.
+            """
+        }
+    )
+except Exception as e:
+    st.error(f"Erreur de configuration: {e}")
 
 # CSS optimisé pour Streamlit Cloud
 st.markdown("""
@@ -654,16 +664,278 @@ def main():
     # Onglet 4: Simulation temps réel
     with tab4:
         real_time_simulation()
+def health_check():
+    """Vérification de santé pour Streamlit Cloud"""
+    try:
+        # Vérifier les imports critiques
+        if not ML_AVAILABLE:
+            st.error("❌ Modules ML non disponibles")
+            return False
+        
+        # Vérifier pandas
+        test_df = pd.DataFrame({'test': [1, 2, 3]})
+        if len(test_df) != 3:
+            return False
+        
+        # Vérifier numpy
+        test_array = np.array([1, 2, 3])
+        if len(test_array) != 3:
+            return False
+        
+        return True
+    except Exception as e:
+        st.error(f"❌ Healthcheck failed: {e}")
+        return False
+
+def main():
+    """Application principale optimisée pour Streamlit Cloud avec gestion d'erreur"""
     
-    # Footer
-    st.markdown("---")
-    st.markdown("""
-    <div style='text-align: center; color: #666;'>
-        🚁 DroneStab AI - Développé avec ❤️ et Streamlit | 
-        📧 Contact: votre.email@example.com | 
-        🔗 <a href='https://github.com/votre-repo'>GitHub</a>
-    </div>
-    """, unsafe_allow_html=True)
+    try:
+        # Healthcheck au démarrage
+        if not health_check():
+            st.error("🚨 L'application n'a pas pu démarrer correctement")
+            st.stop()
+        
+        # En-tête avec animation
+        st.markdown("""
+        <div class="main-header">
+            🚁 DroneStab AI - Pipeline de Stabilisation
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Sidebar avec informations
+        with st.sidebar:
+            st.markdown("### 🎛️ Panneau de Contrôle")
+            st.markdown("---")
+            
+            # Sélection du mode
+            mode = st.selectbox(
+                "Mode d'utilisation:",
+                ["🚀 Démonstration Rapide", "📊 Analyse Complète", "🔬 Mode Expert"]
+            )
+            
+            st.markdown("---")
+            st.markdown("""
+            ### 📖 À Propos
+            Cette application utilise l'IA pour prédire les corrections nécessaires 
+            à la stabilisation d'un drone en temps réel.
+            
+            **Modèles supportés:**
+            - 🧠 Réseau de Neurones (MLP)
+            - 🌲 Random Forest
+            - 📈 Régression Ridge
+            - ⚡ XGBoost
+            """)
+            
+            st.markdown("---")
+            st.markdown("🏗️ **Développé avec Streamlit**")
+            st.markdown("☁️ **Déployé sur Streamlit Cloud**")
+        
+        # Interface principale avec onglets
+        tab1, tab2, tab3, tab4 = st.tabs(["📊 Données", "🤖 Entraînement", "📈 Évaluation", "🚁 Simulation"])
+        
+        # Initialisation du pipeline
+        if 'pipeline' not in st.session_state:
+            st.session_state.pipeline = DroneStabilizationPipeline()
+        
+        pipeline = st.session_state.pipeline
+        
+        # Onglet 1: Gestion des données
+        with tab1:
+            st.markdown("### 📊 Gestion des Données")
+            
+            col1, col2 = st.columns([2, 1])
+            
+            with col1:
+                st.markdown("#### Chargement des Données")
+                
+                # Option de chargement
+                data_option = st.radio(
+                    "Source des données:",
+                    ["🎯 Utiliser les données de démonstration", "📁 Charger un fichier CSV"]
+                )
+                
+                if data_option == "🎯 Utiliser les données de démonstration":
+                    if st.button("🚀 Charger les Données Démo", type="primary"):
+                        with st.spinner("Génération des données de démonstration..."):
+                            try:
+                                df = load_demo_data()
+                                st.session_state.df = df
+                                st.success("✅ Données de démonstration chargées!")
+                            except Exception as e:
+                                st.error(f"❌ Erreur lors du chargement: {e}")
+                
+                else:
+                    uploaded_file = st.file_uploader(
+                        "Sélectionnez votre fichier CSV",
+                        type=['csv'],
+                        help="Le fichier doit contenir les colonnes: roll, pitch, yaw, ax, ay, az, lat, lon, alt, h1, h2, h3, h4, delta_h1, delta_h2, delta_h3, delta_h4"
+                    )
+                    
+                    if uploaded_file is not None:
+                        try:
+                            df = pd.read_csv(uploaded_file)
+                            st.session_state.df = df
+                            st.success("✅ Fichier chargé avec succès!")
+                        except Exception as e:
+                            st.error(f"❌ Erreur lors du chargement: {e}")
+            
+            with col2:
+                if 'df' in st.session_state:
+                    st.markdown("#### 📋 Informations")
+                    df = st.session_state.df
+                    
+                    st.info(f"""
+                    **📊 Statistiques:**
+                    - Lignes: {len(df):,}
+                    - Colonnes: {len(df.columns)}
+                    - Taille: {df.memory_usage(deep=True).sum() / 1024**2:.1f} MB
+                    """)
+            
+            # Aperçu des données
+            if 'df' in st.session_state:
+                st.markdown("#### 🔍 Aperçu des Données")
+                df = st.session_state.df
+                
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.dataframe(df.head(), use_container_width=True)
+                
+                with col2:
+                    st.markdown("**📊 Statistiques Descriptives:**")
+                    st.dataframe(df.describe(), use_container_width=True)
+        
+        # Onglet 2: Entraînement
+        with tab2:
+            st.markdown("### 🤖 Entraînement des Modèles")
+            
+            if 'df' not in st.session_state:
+                st.warning("⚠️ Veuillez d'abord charger des données dans l'onglet 'Données'")
+            else:
+                df = st.session_state.df
+                
+                # Préprocessing
+                try:
+                    X, y = pipeline.preprocess_data(df)
+                    
+                    if X is not None and y is not None:
+                        st.success(f"✅ Données préparées: {len(X)} échantillons, {len(X.columns)} features")
+                        
+                        # Division des données
+                        test_size = st.slider("Taille du jeu de test (%)", 10, 40, 20) / 100
+                        
+                        if st.button("🚀 Lancer l'Entraînement", type="primary"):
+                            with st.spinner("Entraînement en cours..."):
+                                try:
+                                    X_train, X_test, y_train, y_test = train_test_split(
+                                        X, y, test_size=test_size, random_state=42
+                                    )
+                                    
+                                    # Sauvegarde pour évaluation
+                                    st.session_state.X_train = X_train
+                                    st.session_state.X_test = X_test
+                                    st.session_state.y_train = y_train
+                                    st.session_state.y_test = y_test
+                                    
+                                    # Entraînement
+                                    models = pipeline.train_models(X_train, y_train)
+                                    
+                                    st.balloons()
+                                    st.success("🎉 Entraînement terminé avec succès!")
+                                    
+                                    # Résumé de l'entraînement
+                                    if pipeline.training_history:
+                                        st.markdown("#### 📋 Résumé de l'Entraînement")
+                                        summary_df = pd.DataFrame(pipeline.training_history)
+                                        st.dataframe(summary_df, use_container_width=True)
+                                        
+                                except Exception as e:
+                                    st.error(f"❌ Erreur lors de l'entraînement: {e}")
+                                    st.error(f"Détails: {traceback.format_exc()}")
+                
+                except Exception as e:
+                    st.error(f"❌ Erreur lors du préprocessing: {e}")
+        
+        # Onglet 3: Évaluation
+        with tab3:
+            st.markdown("### 📈 Évaluation des Modèles")
+            
+            if not pipeline.is_trained:
+                st.warning("⚠️ Veuillez d'abord entraîner les modèles dans l'onglet 'Entraînement'")
+            else:
+                try:
+                    X_test = st.session_state.X_test
+                    y_test = st.session_state.y_test
+                    
+                    # Évaluation
+                    results = pipeline.evaluate_models(X_test, y_test)
+                    
+                    if results:
+                        # Dashboard des métriques
+                        create_dashboard_metrics(results)
+                        
+                        st.markdown("---")
+                        
+                        # Graphiques de comparaison
+                        col1, col2 = st.columns(2)
+                        
+                        with col1:
+                            # Comparaison des performances
+                            fig_comparison = create_performance_comparison(results)
+                            st.plotly_chart(fig_comparison, use_container_width=True)
+                        
+                        with col2:
+                            # Sélection du modèle pour visualisation détaillée
+                            selected_model = st.selectbox(
+                                "Modèle à analyser:",
+                                list(results.keys()),
+                                index=0
+                            )
+                            
+                            # Graphique prédictions vs réalité
+                            fig_pred = create_predictions_plot(y_test, results, selected_model)
+                            st.plotly_chart(fig_pred, use_container_width=True)
+                        
+                        # Tableau détaillé des résultats
+                        st.markdown("#### 📊 Résultats Détaillés")
+                        results_df = pd.DataFrame({
+                            'Modèle': list(results.keys()),
+                            'MSE': [results[m]['MSE'] for m in results.keys()],
+                            'MAE': [results[m]['MAE'] for m in results.keys()],
+                            'R²': [results[m]['R2'] for m in results.keys()]
+                        }).round(4)
+                        
+                        st.dataframe(results_df, use_container_width=True)
+                
+                except Exception as e:
+                    st.error(f"❌ Erreur lors de l'évaluation: {e}")
+        
+        # Onglet 4: Simulation temps réel
+        with tab4:
+            try:
+                real_time_simulation()
+            except Exception as e:
+                st.error(f"❌ Erreur lors de la simulation: {e}")
+        
+        # Footer
+        st.markdown("---")
+        st.markdown("""
+        <div style='text-align: center; color: #666;'>
+            🚁 DroneStab AI - Développé avec ❤️ et Streamlit | 
+            📧 Contact: votre.email@example.com | 
+            🔗 <a href='https://github.com/votre-repo'>GitHub</a>
+        </div>
+        """, unsafe_allow_html=True)
+        
+    except Exception as e:
+        st.error(f"🚨 Erreur critique dans l'application: {e}")
+        st.error(f"Détails: {traceback.format_exc()}")
+        st.info("Veuillez rafraîchir la page ou contacter le support.")
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        st.error(f"🚨 Erreur fatale: {e}")
+        print(f"FATAL ERROR: {e}")
+        print(traceback.format_exc())

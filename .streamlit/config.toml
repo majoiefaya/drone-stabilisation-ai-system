@@ -6,19 +6,14 @@ textColor = "#262730"
 font = "sans serif"
 
 [server]
-headless = false
+headless = true
 enableCORS = false
-enableXsrfProtection = false
+enableXsrfProtection = true
 maxUploadSize = 200
+port = 8501
 
 [browser]
 gatherUsageStats = false
-showErrorDetails = true
 
 [logger]
 level = "info"
-
-[client]
-caching = true
-displayEnabled = true
-showErrorDetails = true
