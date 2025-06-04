@@ -27,6 +27,29 @@
 
 Ce projet développe un **pipeline automatisé et interactif** pour la stabilisation autonome de drones utilisant l'intelligence artificielle. Le système analyse en temps réel les données des capteurs embarqués (IMU, GPS, hélices) pour prédire et appliquer automatiquement les corrections de stabilisation nécessaires.
 
+## Images du projet
+
+## 1. Importance globale des features
+![Importance globale des features](https://github.com/majoiefaya/drone-stabilisation-ai-system/blob/main/assets/images/importance_globale_des_features.png)
+
+## 2. Interface de test en temps réel
+![Interface de test en temps réel](https://github.com/majoiefaya/drone-stabilisation-ai-system/blob/main/assets/images/interface_de_test_en_temps_reel.png)
+
+## 3. Matrice de corrélation
+![Matrice de corrélation](https://github.com/majoiefaya/drone-stabilisation-ai-system/blob/main/assets/images/matrice_de_correlation.png)
+
+## 4. Robustesse des bruits
+![Robustesse des bruits](https://github.com/majoiefaya/drone-stabilisation-ai-system/blob/main/assets/images/robustesse_des_bruits.png)
+
+## 5. Tendance des variables
+![Tendance des variables](https://github.com/majoiefaya/drone-stabilisation-ai-system/blob/main/assets/images/tendance_des_variables.png)
+
+## 6. Test de la monotonie
+![Test de la monotonie](https://github.com/majoiefaya/drone-stabilisation-ai-system/blob/main/assets/images/test_de_la_monotonie.png)
+
+## 7. Visualisation des performances de prédiction
+![Visualisation des performances de prédiction](https://github.com/majoiefaya/drone-stabilisation-ai-system/blob/main/assets/images/visualisation_des_performances_de_prediction.png)
+
 ### Objectifs Principaux
 
 - **Stabilisation Autonome** : Prédiction automatique des corrections d'hélices à partir des données capteurs
