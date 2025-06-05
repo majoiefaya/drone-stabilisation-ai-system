@@ -1031,65 +1031,556 @@ def show_real_time_prediction(pipeline):
                     f"{delta:.4f}",
                     delta=f"{delta:+.4f}",
                     delta_color="inverse" if abs(delta) > 0.1 else "normal"
-                )
+                )          # Visualisation 3D du drone avec maquette esthétique et réaliste
+        st.markdown("### 🚁 Visualisation 3D Avancée du Drone")
         
-        # Visualisation 3D du drone
-        st.markdown("### 🚁 Visualisation 3D du Drone")
+        # Interface de contrôle pour la visualisation
+        col_viz1, col_viz2, col_viz3 = st.columns([1, 1, 1])
+        with col_viz1:
+            show_propeller_blur = st.checkbox("💨 Effet de flou des hélices", True)
+        with col_viz2:
+            show_force_vectors = st.checkbox("⬆️ Vecteurs de force", True)
+        with col_viz3:
+            show_trajectory = st.checkbox("✈️ Trace de trajectoire", False)
         
+        # Créer une maquette 3D réaliste et esthétique du drone
         fig = go.Figure()
         
-        # Position centrale du drone
+        # === CORPS CENTRAL DU DRONE (Plus réaliste) ===
+        # Corps principal hexagonal (plus moderne)
+        angles = np.linspace(0, 2*np.pi, 7)
+        body_radius = 0.3
+        body_x = body_radius * np.cos(angles)
+        body_y = body_radius * np.sin(angles)
+        body_z = np.zeros_like(angles)
+        
         fig.add_trace(go.Scatter3d(
-            x=[0], y=[0], z=[0],
-            mode='markers',
-            marker=dict(size=15, color='black'),
-            name='Centre Drone'
+            x=body_x, y=body_y, z=body_z,
+            mode='lines+markers',
+            line=dict(width=12, color='#2C3E50'),
+            marker=dict(size=8, color='#34495E'),
+            name='🔲 Châssis Principal',
+            showlegend=True
         ))
         
-        # Positions des hélices (approximatives)
+        # Cockpit/Module de contrôle (cylindre central)
+        theta_cockpit = np.linspace(0, 2*np.pi, 20)
+        cockpit_radius = 0.15
+        cockpit_height = 0.2
+        
+        # Base du cockpit
+        fig.add_trace(go.Scatter3d(
+            x=cockpit_radius * np.cos(theta_cockpit),
+            y=cockpit_radius * np.sin(theta_cockpit),
+            z=np.full_like(theta_cockpit, -0.05),
+            mode='lines',
+            line=dict(width=8, color='#1ABC9C'),
+            name='🎛️ Module de Contrôle',
+            showlegend=True
+        ))
+        
+        # Sommet du cockpit
+        fig.add_trace(go.Scatter3d(
+            x=cockpit_radius * np.cos(theta_cockpit),
+            y=cockpit_radius * np.sin(theta_cockpit),
+            z=np.full_like(theta_cockpit, cockpit_height),
+            mode='lines',
+            line=dict(width=6, color='#16A085'),
+            showlegend=False
+        ))
+          # Antenne GPS/Communication
+        fig.add_trace(go.Scatter3d(
+            x=[0, 0], y=[0, 0], z=[cockpit_height, cockpit_height + 0.3],
+            mode='lines+markers',
+            line=dict(width=4, color='#E67E22'),
+            marker=dict(size=6, color='#E67E22', symbol='diamond'),
+            name='📡 Antenne GPS',
+            showlegend=True
+        ))
+        
+        # === BRAS DU DRONE (Structure renforcée) ===
+        # Positions des hélices (quadcopter)
         propeller_positions = [
-            [1, 1, 0],    # h1
-            [-1, 1, 0],   # h2  
-            [-1, -1, 0],  # h3
-            [1, -1, 0]    # h4
+            [1.8, 1.8, 0],    # h1 (avant-droite)
+            [-1.8, 1.8, 0],   # h2 (avant-gauche)  
+            [-1.8, -1.8, 0],  # h3 (arrière-gauche)
+            [1.8, -1.8, 0]    # h4 (arrière-droite)
         ]
         
-        for i, (pos, correction, color) in enumerate(zip(propeller_positions, corrections, colors)):
-            # Taille proportionnelle à la correction
-            size = 10 + abs(prediction[i]) * 100
+        # Couleurs spécialisées pour chaque moteur
+        motor_colors = ['#E74C3C', '#3498DB', '#2ECC71', '#F39C12']
+        propeller_names = ['Moteur 1 (AD)', 'Moteur 2 (AG)', 'Moteur 3 (ARG)', 'Moteur 4 (ARD)']
+        
+        for i, (pos, correction, color, name) in enumerate(zip(propeller_positions, corrections, motor_colors, propeller_names)):
+            correction_value = prediction[i]
+            intensity = abs(correction_value)
+            
+            # === BRAS STRUCTURELS ===
+            # Bras principal (tube cylindrique)
+            arm_points = 20
+            arm_t = np.linspace(0, 1, arm_points)
+            arm_x = arm_t * pos[0]
+            arm_y = arm_t * pos[1] 
+            arm_z = np.full_like(arm_t, pos[2])
             
             fig.add_trace(go.Scatter3d(
-                x=[pos[0]], y=[pos[1]], z=[pos[2]],
+                x=arm_x, y=arm_y, z=arm_z,
+                mode='lines',
+                line=dict(width=10, color='#7F8C8D'),
+                name=f'Bras {i+1}' if i == 0 else None,
+                showlegend=True if i == 0 else False
+            ))
+            
+            # Renforcement du bras (effet 3D)
+            fig.add_trace(go.Scatter3d(
+                x=arm_x, y=arm_y, z=arm_z + 0.05,
+                mode='lines',
+                line=dict(width=6, color='#95A5A6'),
+                showlegend=False
+            ))
+            
+            # === MOTEURS ===
+            # Base du moteur (cylindre)
+            motor_angles = np.linspace(0, 2*np.pi, 12)
+            motor_radius = 0.15
+            motor_x = pos[0] + motor_radius * np.cos(motor_angles)
+            motor_y = pos[1] + motor_radius * np.sin(motor_angles)
+            motor_z = np.full_like(motor_angles, pos[2] - 0.1)
+            
+            fig.add_trace(go.Scatter3d(
+                x=motor_x, y=motor_y, z=motor_z,
+                mode='lines',
+                line=dict(width=8, color='#2C3E50'),
+                name=f'🔧 Moteurs' if i == 0 else None,
+                showlegend=True if i == 0 else False
+            ))
+            
+            # === HÉLICES RÉALISTES ===
+            # Hélice centrale (moyeu)
+            hub_size = 12 + intensity * 30
+            hub_color = color if correction_value > 0 else '#BDC3C7'
+            hub_opacity = 0.9 if abs(correction_value) > 0.01 else 0.6
+            
+            fig.add_trace(go.Scatter3d(
+                x=[pos[0]], y=[pos[1]], z=[pos[2] + 0.05],
                 mode='markers',
-                marker=dict(size=size, color=color),
-                name=f'{correction}: {prediction[i]:.4f}'
+                marker=dict(
+                    size=hub_size,
+                    color=hub_color,
+                    opacity=hub_opacity,
+                    symbol='circle',
+                    line=dict(width=2, color='#2C3E50')
+                ),
+                name=f'{name}: {correction_value:.4f}',
+                showlegend=True
+            ))
+            
+            # Pales d'hélice (effet réaliste)
+            if show_propeller_blur:
+                # Effet de flou de rotation (cercles concentriques)
+                for radius_mult in [0.4, 0.6, 0.8, 1.0]:
+                    blur_radius = (0.4 + intensity * 0.3) * radius_mult
+                    blur_x = pos[0] + blur_radius * np.cos(theta_cockpit)
+                    blur_y = pos[1] + blur_radius * np.sin(theta_cockpit)
+                    blur_z = np.full_like(theta_cockpit, pos[2] + 0.08)
+                    
+                    fig.add_trace(go.Scatter3d(
+                        x=blur_x, y=blur_y, z=blur_z,
+                        mode='lines',
+                        line=dict(
+                            width=max(1, 4 - radius_mult * 2), 
+                            color=hub_color, 
+                            dash='dot'
+                        ),
+                        opacity=0.3 * (1.1 - radius_mult) * (0.5 + intensity),
+                        showlegend=False
+                    ))
+            else:
+                # Pales d'hélice individuelles (statiques)
+                blade_angles = [0, np.pi/2, np.pi, 3*np.pi/2]
+                for blade_angle in blade_angles:
+                    blade_length = 0.5 + intensity * 0.2
+                    blade_x = [pos[0], pos[0] + blade_length * np.cos(blade_angle)]
+                    blade_y = [pos[1], pos[1] + blade_length * np.sin(blade_angle)]
+                    blade_z = [pos[2] + 0.08, pos[2] + 0.08]
+                    
+                    fig.add_trace(go.Scatter3d(
+                        x=blade_x, y=blade_y, z=blade_z,
+                        mode='lines',
+                        line=dict(width=6, color=hub_color),
+                        opacity=0.8,
+                        showlegend=False
+                    ))
+              # === VECTEURS DE FORCE ET CORRECTIONS ===
+            if show_force_vectors and abs(correction_value) > 0.005:
+                # Vecteur de poussée
+                thrust_length = 0.5 + intensity * 1.5
+                thrust_direction = 1 if correction_value > 0 else -1
+                thrust_z = pos[2] + thrust_direction * thrust_length
+                
+                fig.add_trace(go.Scatter3d(
+                    x=[pos[0], pos[0]], 
+                    y=[pos[1], pos[1]], 
+                    z=[pos[2] + 0.1, thrust_z],
+                    mode='lines+markers',
+                    line=dict(width=6, color='#E67E22'),
+                    marker=dict(
+                        size=8, 
+                        color='#E67E22',
+                        symbol='diamond'
+                    ),
+                    name=f'⬆️ Vecteurs de Force' if i == 0 else None,
+                    showlegend=True if i == 0 else False
+                ))
+                
+                # Annotation de la valeur
+                fig.add_trace(go.Scatter3d(
+                    x=[pos[0] + 0.2], y=[pos[1] + 0.2], z=[thrust_z],
+                    mode='text',
+                    text=[f'{correction_value:.3f}'],
+                    textfont=dict(size=10, color=color),
+                    showlegend=False
+                ))
+        
+        # === ÉLÉMENTS ENVIRONNEMENTAUX ===
+        # Plan de référence (sol avec texture)
+        ground_x, ground_y = np.meshgrid(np.linspace(-3, 3, 15), np.linspace(-3, 3, 15))
+        ground_z = np.full_like(ground_x, -0.8)
+        
+        fig.add_trace(go.Surface(
+            x=ground_x, y=ground_y, z=ground_z,
+            colorscale='Earth',
+            opacity=0.4,
+            showscale=False,
+            name='🌍 Sol de Référence',
+            contours=dict(x=dict(show=True, color='#7F8C8D', width=1))
+        ))
+        
+        # Trajectoire de vol (si activée)
+        if show_trajectory:
+            # Simulation d'une trajectoire de vol
+            t_traj = np.linspace(0, 4*np.pi, 50)
+            traj_x = 0.5 * np.sin(t_traj * 0.5) * np.cos(t_traj * 0.2)
+            traj_y = 0.5 * np.cos(t_traj * 0.5) * np.sin(t_traj * 0.3)
+            traj_z = 0.3 + 0.2 * np.sin(t_traj * 0.1)
+            
+            fig.add_trace(go.Scatter3d(
+                x=traj_x, y=traj_y, z=traj_z,
+                mode='lines+markers',
+                line=dict(width=4, color='#9B59B6', dash='dash'),
+                marker=dict(size=3, color='#8E44AD'),
+                name='✈️ Trajectoire de Vol',
+                showlegend=True
             ))
         
+        # === INDICATEURS DE STABILITÉ ===
+        # Horizon artificiel (plan de stabilité)
+        horizon_size = 2.5
+        horizon_x = [-horizon_size, horizon_size, horizon_size, -horizon_size, -horizon_size]
+        horizon_y = [-horizon_size, -horizon_size, horizon_size, horizon_size, -horizon_size]
+        horizon_z = [0, 0, 0, 0, 0]
+        
+        fig.add_trace(go.Scatter3d(
+            x=horizon_x, y=horizon_y, z=horizon_z,
+            mode='lines',
+            line=dict(width=3, color='#3498DB', dash='dashdot'),
+            opacity=0.6,
+            name='🎯 Horizon de Référence',
+            showlegend=True
+        ))
+          
+        # Configuration avancée de la scène 3D
         fig.update_layout(
-            title="Vue 3D du Drone avec Corrections",
+            title={
+                'text': "🚁 Maquette 3D Réaliste du Drone - Système de Stabilisation Avancé",
+                'x': 0.5,
+                'font': {'size': 20, 'color': '#2C3E50', 'family': 'Arial Black'}
+            },
             scene=dict(
-                xaxis_title="X",
-                yaxis_title="Y", 
-                zaxis_title="Z"
+                xaxis=dict(
+                    title="Axe X - Roulis (Roll) [m]",
+                    range=[-3, 3],
+                    showgrid=True,
+                    gridcolor='#BDC3C7',
+                    gridwidth=1,
+                    backgroundcolor='#F8F9FA',
+                    showbackground=True
+                ),
+                yaxis=dict(
+                    title="Axe Y - Tangage (Pitch) [m]", 
+                    range=[-3, 3],
+                    showgrid=True,
+                    gridcolor='#BDC3C7',
+                    gridwidth=1,
+                    backgroundcolor='#F8F9FA',
+                    showbackground=True
+                ),
+                zaxis=dict(
+                    title="Axe Z - Lacet (Yaw) [m]",
+                    range=[-1.5, 2.5],
+                    showgrid=True,
+                    gridcolor='#BDC3C7',
+                    gridwidth=1,
+                    backgroundcolor='#F8F9FA',
+                    showbackground=True
+                ),
+                camera=dict(
+                    eye=dict(x=2.5, y=2.5, z=1.8),
+                    center=dict(x=0, y=0, z=0.2),
+                    up=dict(x=0, y=0, z=1)
+                ),
+                bgcolor='#FAFBFC',
+                aspectmode='cube'
             ),
-            height=500
+            height=700,
+            margin=dict(l=0, r=0, t=60, b=0),
+            legend=dict(
+                x=0.02,
+                y=0.98,
+                bgcolor='rgba(255,255,255,0.95)',
+                bordercolor='#34495E',
+                borderwidth=2,
+                font=dict(size=11, family='Arial')
+            ),
+            paper_bgcolor='#FFFFFF',
+            plot_bgcolor='#FAFBFC'
         )
         
         st.plotly_chart(fig, use_container_width=True)
+          
+        # === PANNEAU DE CONTRÔLE ET LÉGENDE INTERACTIVE ===
+        st.markdown("---")
+        col1, col2, col3 = st.columns([1, 1, 1])
         
-        # Recommandations
-        st.markdown("### 💡 Recommandations")
+        with col1:
+            st.markdown("#### 🎯 État des Moteurs")
+            for i, (name, color, correction_value) in enumerate(zip(propeller_names, motor_colors, prediction)):
+                # Calcul du statut
+                if abs(correction_value) < 0.01:
+                    status_icon = "🟢"
+                    status_text = "OPTIMAL"
+                    status_color = "#2ECC71"
+                elif abs(correction_value) < 0.03:
+                    status_icon = "🟡"
+                    status_text = "LÉGER"
+                    status_color = "#F39C12"
+                elif abs(correction_value) < 0.08:
+                    status_icon = "🟠"
+                    status_text = "MODÉRÉ"
+                    status_color = "#E67E22"
+                else:
+                    status_icon = "🔴"
+                    status_text = "CRITIQUE"
+                    status_color = "#E74C3C"
+                
+                # Direction de correction
+                if correction_value > 0.005:
+                    direction = "⬆️ Augmenter Poussée"
+                elif correction_value < -0.005:
+                    direction = "⬇️ Réduire Poussée"
+                else:
+                    direction = "⚖️ Maintenir"
+                
+                st.markdown(f"""
+                <div style="padding: 12px; margin: 6px 0; border-left: 5px solid {color}; 
+                            background: linear-gradient(90deg, {color}11, {color}22); 
+                            border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    {status_icon} <strong>{name}</strong><br>
+                    <span style="color: {status_color}; font-weight: bold;">Statut: {status_text}</span><br>
+                    Correction: <code style="background-color: #F8F9FA; padding: 2px 6px; border-radius: 4px;">{correction_value:.4f}</code><br>
+                    Action: <em>{direction}</em>
+                </div>
+                """, unsafe_allow_html=True)
         
+        with col2:
+            st.markdown("#### 📊 Analyse de Stabilité")
+            max_correction = np.max(np.abs(prediction))
+            avg_correction = np.mean(np.abs(prediction))
+            
+            # Classification de la stabilité
+            if max_correction < 0.015:
+                stability_level = "EXCELLENT"
+                stability_color = "#2ECC71"
+                stability_icon = "✅"
+                stability_desc = "Drone parfaitement stable"
+            elif max_correction < 0.04:
+                stability_level = "BON"
+                stability_color = "#3498DB"
+                stability_icon = "ℹ️"
+                stability_desc = "Stabilité correcte"
+            elif max_correction < 0.08:
+                stability_level = "MOYEN"
+                stability_color = "#F39C12"
+                stability_icon = "⚠️"
+                stability_desc = "Attention requise"
+            else:
+                stability_level = "CRITIQUE"
+                stability_color = "#E74C3C"
+                stability_icon = "🚨"
+                stability_desc = "Intervention immédiate"
+            
+            # Indicateur de stabilité principal
+            st.markdown(f"""
+            <div style="text-align: center; padding: 25px; 
+                        background: linear-gradient(135deg, {stability_color}22, {stability_color}44); 
+                        border-radius: 15px; border: 3px solid {stability_color};
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+                <h2 style="color: {stability_color}; margin: 0; font-family: Arial Black;">
+                    {stability_icon} {stability_level}
+                </h2>
+                <p style="margin: 10px 0 5px 0; color: #2C3E50; font-size: 14px;">
+                    {stability_desc}
+                </p>
+                <div style="margin-top: 15px;">
+                    <strong>Correction Max:</strong> <span style="color: {stability_color};">{max_correction:.4f}</span><br>
+                    <strong>Correction Moy:</strong> <span style="color: #7F8C8D;">{avg_correction:.4f}</span>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            # Barre de progression de stabilité
+            stability_percentage = max(0, min(100, (1 - max_correction / 0.1) * 100))
+            st.markdown("##### 📈 Indice de Stabilité")
+            st.progress(stability_percentage / 100)
+            st.markdown(f"**{stability_percentage:.1f}%** - Stabilité Globale")
+        
+        with col3:
+            st.markdown("#### 🔧 Recommandations")
+            
+            # Recommandations basées sur l'analyse
+            recommendations = []
+            
+            if max_correction < 0.01:
+                recommendations.append("✅ **Vol optimal** - Maintenir les paramètres actuels")
+                recommendations.append("🎯 **Précision excellente** - Système parfaitement calibré")
+            elif max_correction < 0.03:
+                recommendations.append("🔄 **Ajustements mineurs** recommandés")
+                recommendations.append("📊 **Monitoring continu** des corrections")
+            elif max_correction < 0.08:
+                recommendations.append("⚡ **Calibration requise** - Vérifier les capteurs")
+                recommendations.append("🛠️ **Maintenance préventive** conseillée")
+            else:
+                recommendations.append("🚨 **URGENT** - Atterrissage immédiat recommandé")
+                recommendations.append("🔴 **Inspection complète** du système requis")
+                recommendations.append("⚠️ **Ne pas voler** jusqu'à résolution")
+            
+            # Recommandations spécifiques par moteur
+            critical_motors = [i for i, corr in enumerate(prediction) if abs(corr) > 0.05]
+            if critical_motors:
+                motor_names_short = ["M1", "M2", "M3", "M4"]
+                critical_list = ", ".join([motor_names_short[i] for i in critical_motors])
+                recommendations.append(f"🎯 **Moteurs critiques**: {critical_list}")
+            
+            for i, rec in enumerate(recommendations):
+                st.markdown(f"{i+1}. {rec}")
+            
+            # Indicateur de sécurité
+            if max_correction > 0.1:
+                st.error("🛑 **ALERTE SÉCURITÉ** - Vol non sécurisé!")
+            elif max_correction > 0.05:
+                st.warning("⚠️ **Attention** - Surveillance renforcée")
+            else:
+                st.success("🛡️ **Vol sécurisé** - Conditions normales")
+          
+        # === MÉTRIQUES TEMPS RÉEL ===
+        st.markdown("---")
+        st.markdown("### 📈 Métriques de Performance Temps Réel")
+        
+        metric_col1, metric_col2, metric_col3, metric_col4 = st.columns(4)
+        
+        with metric_col1:
+            st.metric(
+                label="🎯 Précision Moyenne",
+                value=f"{(1 - avg_correction):.3f}",
+                delta=f"{(1 - avg_correction - 0.95):.3f}",
+                delta_color="normal"
+            )
+        
+        with metric_col2:
+            st.metric(
+                label="⚖️ Équilibrage",
+                value=f"{100 - (np.std(prediction) * 1000):.1f}%",
+                delta=f"{10 - (np.std(prediction) * 100):.1f}%",
+                delta_color="inverse"
+            )
+        
+        with metric_col3:
+            st.metric(
+                label="🔧 Corrections Actives",
+                value=f"{sum(1 for p in prediction if abs(p) > 0.01)}/4",
+                delta="Moteurs",
+                delta_color="off"
+            )
+        
+        with metric_col4:
+            st.metric(
+                label="🛡️ Indice Sécurité",
+                value=f"{stability_percentage:.1f}%",
+                delta=f"{stability_percentage - 85:.1f}%",
+                delta_color="normal" if stability_percentage > 85 else "inverse"
+            )
+        
+        # === RECOMMANDATIONS FINALES ===
+        st.markdown("### 💡 Recommandations Opérationnelles")
+        
+        # Analyse détaillée des corrections
         max_correction = max(abs(p) for p in prediction)
         
-        if max_correction < 0.01:
-            st.success("✅ Drone stable - Corrections minimales nécessaires")
+        if max_correction < 0.005:
+            st.success("""
+            ✅ **STATUT OPTIMAL** - Le drone est parfaitement stable
+            - 🎯 Toutes les corrections sont dans la plage optimale
+            - ✈️ Vol sécurisé et efficace 
+            - 🔋 Consommation énergétique minimale
+            - 📊 Performances au niveau professionnel
+            """)
+        elif max_correction < 0.02:
+            st.info("""
+            ℹ️ **STATUT CORRECT** - Légères corrections détectées
+            - 🔄 Ajustements automatiques en cours
+            - 📊 Monitoring continu recommandé
+            - ⚙️ Système de stabilisation efficace
+            - 🎯 Précision dans les normes acceptables
+            """)
         elif max_correction < 0.05:
-            st.info("ℹ️ Corrections légères recommandées")
+            st.warning("""
+            ⚠️ **ATTENTION REQUISE** - Corrections significatives
+            - 🔧 Vérification des capteurs recommandée
+            - 📡 Possible interférence ou dérive
+            - 🛠️ Calibration préventive conseillée
+            - 👀 Surveillance renforcée du vol
+            """)
         elif max_correction < 0.1:
-            st.warning("⚠️ Corrections importantes nécessaires")
+            st.error("""
+            🚨 **CORRECTIONS IMPORTANTES** - Intervention requise
+            - ⚡ Ajustement immédiat des paramètres
+            - 🔍 Diagnostic complet du système
+            - 🛬 Considérer un atterrissage préventif
+            - 📞 Support technique recommandé
+            """)
         else:
-            st.error("🚨 Corrections critiques - Attention requise!")
+            st.error("""
+            🆘 **ALERTE CRITIQUE** - Danger immédiat
+            - 🛑 **ATTERRISSAGE IMMÉDIAT OBLIGATOIRE**
+            - 🚨 Système potentiellement défaillant
+            - 🔴 Ne pas continuer le vol
+            - 🛠️ Maintenance d'urgence requise
+            """)
+            
+            # Alerte sonore visuelle pour les situations critiques
+            st.markdown("""
+            <div style="background-color: #FF0000; color: white; padding: 20px; border-radius: 10px; 
+                        text-align: center; font-weight: bold; font-size: 18px; animation: blink 1s infinite;">
+                🚨 ALERTE SÉCURITÉ - INTERVENTION IMMÉDIATE REQUISE 🚨
+            </div>
+            <style>
+            @keyframes blink {
+                0% { opacity: 1; }
+                50% { opacity: 0.5; }
+                100% { opacity: 1; }
+            }
+            </style>
+            """, unsafe_allow_html=True)
     
     # Mode simulation automatique
     st.markdown("### 🔄 Mode Simulation Automatique")
@@ -1128,9 +1619,11 @@ def show_real_time_prediction(pipeline):
                 
                 prediction = pipeline.models[model_choice].predict(sim_scaled)[0]
                 results.append(prediction)
-            
-            # Visualiser les résultats de simulation
+              # Visualiser les résultats de simulation
             results = np.array(results)
+            
+            # Définir les noms des corrections
+            corrections = ['delta_h1', 'delta_h2', 'delta_h3', 'delta_h4']
             
             fig = go.Figure()
             
