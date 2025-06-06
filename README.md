@@ -50,6 +50,19 @@ Ce projet développe un **pipeline automatisé et interactif** pour la stabilisa
 ## 7. Visualisation des performances de prédiction
 ![Visualisation des performances de prédiction](https://github.com/majoiefaya/drone-stabilisation-ai-system/blob/main/assets/images/visualisation_des_performances_de_prediction.png)
 
+## 8. 
+![Modélisation_3d_du_drone](https://github.com/majoiefaya/drone-stabilisation-ai-system/blob/main/assets/images/modelisation_3d_1.png)
+
+## 9. 
+![Modélisation_3d_du_drone](https://github.com/majoiefaya/drone-stabilisation-ai-system/blob/main/assets/images/modelisation_3d_2.png)
+
+## 10. 
+![Modélisation_3d_du_drone](https://github.com/majoiefaya/drone-stabilisation-ai-system/blob/main/assets/images/modelisation_3d_3.png)
+
+## 11. 
+![Modélisation_3d_du_drone](https://github.com/majoiefaya/drone-stabilisation-ai-system/blob/main/assets/images/modelisation_3d_4.png)
+
+
 ### Objectifs Principaux
 
 - **Stabilisation Autonome** : Prédiction automatique des corrections d'hélices à partir des données capteurs
@@ -230,20 +243,6 @@ pipeline.auto_diagnostic(train_data, test_data)
 | Random Forest | 0.00089 | 0.024 | 0.995 | ~8s |
 | XGBoost | 0.00095 | 0.026 | 0.994 | ~12s |
 | Ridge | 0.00156 | 0.032 | 0.989 | ~2s |
-
-### 📈 Visualisations Clés
-
-#### 1. Comparaison Prédictions vs Réalité
-![Prédictions vs Réalité](docs/predictions_comparison.png)
-*Graphiques montrant l'excellente corrélation entre prédictions et valeurs réelles*
-
-#### 2. Analyse SHAP - Importance des Features
-![SHAP Analysis](docs/shap_analysis.png)
-*Variables les plus influentes : h4, h3, roll, pitch (logique métier validée)*
-
-#### 3. Tests de Robustesse au Bruit
-![Robustesse](docs/noise_robustness.png)
-*Performance maintenue jusqu'à 20% de bruit (excellent pour applications réelles)*
 
 ### Métriques de Succès
 
